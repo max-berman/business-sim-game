@@ -28,7 +28,7 @@ npm run build
 - The came is leveraging Phaser 3 JavaScript Game Framework and focuses fully on the front-end
 - The aim was to provide a polished UI considering time constrains
 - The last feature from the requirement above has been omitted due to time constraints however the game state is persistent and being saved upon closing the browser window/tab so that when the player opens the game (in the same browser) he will start from where he left off
-- The game supports Desktop, Tablet and Mobile experiences
+- The game supports Desktop as well as Mobile experience
 
 ### Room for improvements
 
