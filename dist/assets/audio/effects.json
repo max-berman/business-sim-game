@@ -1,0 +1,25 @@
+{
+  "resources": [
+    "effects.ogg",
+    "effects.m4a",
+    "effects.mp3",
+    "effects.ac3"
+  ],
+  "spritemap": {
+    "blip": {
+      "start": 0,
+      "end": 0.01,
+      "loop": false
+    },
+    "powerup": {
+      "start": 2,
+      "end": 2.3690702947845805,
+      "loop": false
+    },
+    "coin": {
+      "start": 4,
+      "end": 4.170884353741497,
+      "loop": false
+    }
+  }
+}
