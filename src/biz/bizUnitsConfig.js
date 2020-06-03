@@ -6,7 +6,7 @@ export default Object.freeze([
     revenue: 1.5,
     coefficient: 1.07,
     delay: 500,
-    managerFee: 70
+    managerFee: 20
   },
   {
     title: 'Gas Station',

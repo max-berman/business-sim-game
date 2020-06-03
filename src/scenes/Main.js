@@ -1,6 +1,7 @@
 import Phaser, { Geom } from 'phaser'
 import Biz from '../biz/Biz'
 import bizUnits from '../biz/bizUnitsConfig'
+import _uniqBy from 'lodash/uniqBy'
 
 import { totalSumFont } from '../styles/styles'
 
@@ -12,8 +13,28 @@ export default class Main extends Phaser.Scene {
     super('main')
   }
 
+  updateTotalSum(sum) {
+    this.data.set('totalMoney', sum)
+    if (typeof localStorage !== undefined) {
+      localStorage.setItem('total', sum)
+    }
+  }
+
+  updateLocalStorage(biz) {
+    if (typeof localStorage !== undefined) {
+      const savedProgress = JSON.parse(localStorage.getItem('progress'))
+      const progress = savedProgress === null ? [biz] : [biz, ...savedProgress]
+      localStorage.setItem('progress', JSON.stringify(_uniqBy(progress, 'id')))
+    }
+  }
+
   init(data) {
-    this.data.set('totalMoney', 20900)
+    const savedTotal = JSON.parse(localStorage.getItem('total'))
+    if (typeof localStorage !== undefined && savedTotal !== null) {
+      this.data.set('totalMoney', savedTotal)
+    } else {
+      this.data.set('totalMoney', 0)
+    }
   }
 
   pulseNextBizPrice({ index }) {
@@ -72,7 +93,11 @@ export default class Main extends Phaser.Scene {
     })
 
     bizInstances.forEach((biz, i) => {
-      const { isBizEnabled, index } = biz
+      const {
+        biz: { isBizEnabled },
+        index
+      } = biz
+      //biz.update()
       if (isBizEnabled) {
         biz.update()
         if (bizInstances.length === i + 1) return

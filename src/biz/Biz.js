@@ -10,19 +10,35 @@ import {
   pointerStyle
 } from '../styles/styles'
 
+const savedProgress = JSON.parse(localStorage.getItem('progress'))
+
 export default class Biz {
   constructor(scene, index, config) {
     this.scene = scene
     this.index = index
     this.config = config
-    this.isBizEnabled = this.config.id === 'biz-1' // enable only first business at start
+
     this.currentRev = this.scene.data.values.totalMoney
-    this.biz = {
-      amount: this.isBizEnabled ? 1 : 0,
-      currentCost: config.initCost
-    }
+
+    const bizData =
+      savedProgress !== null
+        ? savedProgress.filter(({ id }) => id === this.config.id)[0]
+        : null
+
+    console.log(bizData, savedProgress)
+
+    this.biz =
+      bizData !== undefined && bizData !== null
+        ? bizData
+        : {
+            id: this.config.id,
+            amount: this.config.id === 'biz-1' ? 1 : 0,
+            currentCost: config.initCost,
+            isManagerEnabled: false,
+            isBizEnabled: this.config.id === 'biz-1' // enable only first business at start
+          }
+
     this.isBusy = false
-    this.isManagerDeployed = false
   }
 
   canBuy() {
@@ -41,10 +57,11 @@ export default class Biz {
     const { totalMoney } = this.scene.data.values
     const { manager } = this.button
     this.currentRev = totalMoney + revenue * this.biz.amount
-    this.scene.data.set('totalMoney', this.currentRev)
+    this.scene.updateTotalSum(this.currentRev)
     this.scene.pulseNextBizPrice(this)
     this.isBusy = false
-    if (this.isManagerDeployed) {
+    this.scene.updateLocalStorage(this.biz)
+    if (this.biz.isManagerEnabled) {
       this.handleBizAction()
     }
   }
@@ -68,9 +85,10 @@ export default class Biz {
     this.currentRev = totalMoney - this.biz.currentCost
     this.biz.currentCost *= coefficient
     this.biz.amount += 1
-    this.scene.data.set('totalMoney', this.currentRev)
+    this.scene.updateTotalSum(this.currentRev)
     this.scene.pulse(this.indicator.bizAmount, { from: 1.3, to: 1 })
     this.scene.pulse(this.icon, { from: 0.8, to: 0.7 })
+    this.scene.updateLocalStorage(this.biz)
   }
 
   init() {
@@ -154,8 +172,7 @@ export default class Biz {
       .setAngle(isOdd ? -3 : 3)
       .disableInteractive()
 
-    /* Buttons Events */
-
+    /* Handling Button Events */
     this.icon
       .on('pointerdown', (e) => {
         if (this.isBusy) return
@@ -172,7 +189,7 @@ export default class Biz {
     this.button.manager
       .on('pointerdown', () => {
         scene.sound.playAudioSprite('sfx', 'powerup', { volume: 0.4 })
-        this.isManagerDeployed = true
+        this.biz.isManagerEnabled = true
         if (this.isBusy) return
         this.handleBizAction()
       })
@@ -210,7 +227,7 @@ export default class Biz {
     this.bizPrice
       .on('pointerdown', () => {
         scene.sound.playAudioSprite('sfx', 'powerup', { volume: 0.4 })
-        this.isBizEnabled = true
+        this.biz.isBizEnabled = true
         this.handleBuyBiz()
         scene.bounceIn(this.container)
       })
@@ -237,6 +254,10 @@ export default class Biz {
         this.indicator.bizAmount
       ])
       .setX(this.biz.amount === 0 ? (isOdd ? -500 : 500) : 0)
+
+    if (this.biz.isManagerEnabled) {
+      this.handleBizAction()
+    }
   }
 
   callBackUpdate() {}
@@ -275,7 +296,7 @@ export default class Biz {
 
     bizPrice
       .setText(buyLabel)
-      .setAlpha(!this.isBizEnabled)
+      .setAlpha(!this.biz.isBizEnabled)
       .setStyle(this.canBuy() ? enabledBizFont : disabledBizFont)
 
     indicator.bizAmount.setText(amount)
@@ -291,7 +312,7 @@ export default class Biz {
     }
 
     if (this.currentRev >= managerFee) {
-      if (this.isManagerDeployed) {
+      if (this.biz.isManagerEnabled) {
         manager.setAlpha(0.5)
         manager.disableInteractive()
       } else {
