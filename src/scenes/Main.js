@@ -14,8 +14,7 @@ export default class Main extends Scene {
   }
 
   updateTotalSum(sum) {
-    const { totalMoney } = this.data.values
-    const totalSumFormatted = totalMoney.toLocaleString('en-US', {
+    const totalSumFormatted = sum.toLocaleString('en-US', {
       style: 'currency',
       currency: 'USD'
     })
@@ -78,14 +77,14 @@ export default class Main extends Scene {
   }
 
   create() {
+    const { totalMoney } = this.data.values
     this.add.image(0, 0, 'bg').setOrigin(0).setScale(1)
     this.audioSprite = this.sound.addAudioSprite('sfx')
     this.audioSprite.stop()
 
-    this.totalIndicator = this.add
-      .text(80, 28, this.data.values.totalMoney, totalSumFont)
-      .setOrigin(0)
-      .setDepth(1)
+    this.totalIndicator = this.add.text(80, 30, '', totalSumFont).setOrigin(0).setDepth(1)
+
+    this.updateTotalSum(totalMoney)
 
     bizUnits.forEach((config, i) => {
       bizInstances[i] = new Biz(this, i, config)
