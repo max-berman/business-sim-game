@@ -165,7 +165,15 @@ export default class Biz {
       .setInteractive(pointerStyle)
 
     this.bizPrice = scene.add
-      .text(240, posY + 170, `$${initCost.toFixed(2)}`, disabledBizFont)
+      .text(
+        240,
+        posY + 170,
+        `${initCost.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        })}`,
+        disabledBizFont
+      )
       .setOrigin(0.5)
       .setAngle(isOdd ? -3 : 3)
       .disableInteractive()
@@ -276,9 +284,13 @@ export default class Biz {
     const isOdd = index % 2 === 0
     const posY = index * 104
 
+    const initPrice = initCost.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    })
     const buyLabel = this.canBuy()
-      ? `Buy ${title} for $${initCost.toFixed(2)}`
-      : `${title} - $${initCost.toFixed(2)}`
+      ? `Buy ${title} for ${initPrice}`
+      : `${title} - ${initPrice}`
 
     indicator.revenue.setText(
       (amount * revenue).toLocaleString('en-US', {
@@ -289,7 +301,12 @@ export default class Biz {
     // apply a bit of transparency for disabled icon
     icon.setAlpha(amount > 0 && !this.isBusy ? 1 : 0.9)
     buyMore
-      .setText(`Buy x 1 - $${this.biz.currentCost.toFixed(2)}`)
+      .setText(
+        `Buy x 1 - ${this.biz.currentCost.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        })}`
+      )
       .setAlpha(this.canBuy() ? 1 : 0)
 
     bizPrice
@@ -319,7 +336,7 @@ export default class Biz {
       }
     }
 
-    // Render countdown only when it's dispatched
+    // Render countdown only when the timer is dispatched
     if (countDown !== undefined && !countDown.hasDispatched) {
       const delayInSec = delay * 0.001
       const startAngle = -90
