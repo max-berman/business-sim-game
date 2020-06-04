@@ -1,4 +1,4 @@
-import Phaser, { Geom } from 'phaser'
+import { Geom, Scene } from 'phaser'
 const { Rectangle } = Geom
 
 const hexColors = {
@@ -7,7 +7,7 @@ const hexColors = {
   white: 0xffffff
 }
 
-export default class Boot extends Phaser.Scene {
+export default class Boot extends Scene {
   constructor() {
     super('boot')
     this.progressBar = null

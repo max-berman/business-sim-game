@@ -1,4 +1,4 @@
-import { GameObjects, Geom, Math } from 'phaser'
+import { Geom, Math } from 'phaser'
 import {
   bizTitleFont,
   revTextFont,
@@ -24,8 +24,6 @@ export default class Biz {
       savedProgress !== null
         ? savedProgress.filter(({ id }) => id === this.config.id)[0]
         : null
-
-    console.log(bizData, savedProgress)
 
     this.biz =
       bizData !== undefined && bizData !== null

@@ -1,4 +1,4 @@
-import Phaser, { Geom } from 'phaser'
+import { Geom, Scene } from 'phaser'
 import Biz from '../biz/Biz'
 import bizUnits from '../biz/bizUnitsConfig'
 import _uniqBy from 'lodash/uniqBy'
@@ -8,13 +8,20 @@ import { totalSumFont } from '../styles/styles'
 let total
 const bizInstances = []
 
-export default class Main extends Phaser.Scene {
+export default class Main extends Scene {
   constructor() {
     super('main')
   }
 
   updateTotalSum(sum) {
+    const { totalMoney } = this.data.values
+    const totalSumFormatted = totalMoney.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    })
     this.data.set('totalMoney', sum)
+    this.totalIndicator.setText(totalSumFormatted)
+    window.document.title = total
     if (typeof localStorage !== undefined) {
       localStorage.setItem('total', sum)
     }
@@ -86,26 +93,17 @@ export default class Main extends Phaser.Scene {
     })
   }
   update() {
-    const { totalMoney } = this.data.values
-    const total = totalMoney.toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    })
-
-    bizInstances.forEach((biz, i) => {
+    bizInstances.forEach((instance, i) => {
       const {
-        biz: { isBizEnabled },
-        index
-      } = biz
-      //biz.update()
+        biz: { isBizEnabled }
+      } = instance
+
+      // to avoid unnecessary update loop on disabled instance
       if (isBizEnabled) {
-        biz.update()
+        instance.update()
         if (bizInstances.length === i + 1) return
         bizInstances[i + 1].update()
       }
     })
-
-    this.totalIndicator.setText(total)
-    window.document.title = total
   }
 }

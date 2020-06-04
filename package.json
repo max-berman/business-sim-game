@@ -7,8 +7,7 @@
 		"build": "parcel build src/index.html --out-dir dist",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
-	"author": "supertommy",
-	"license": "MIT",
+	"author": "Max Berman",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/ourcade/phaser3-parcel-template.git"

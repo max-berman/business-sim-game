@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import { AUTO, Scale, Game } from 'phaser'
 
 import Boot from './scenes/Boot'
 import Main from './scenes/Main'
@@ -6,7 +6,7 @@ import Main from './scenes/Main'
 const config = {
   title: 'Adv. Capitalist',
   backgroundColor: '#fdd80d',
-  type: Phaser.AUTO,
+  type: AUTO,
   antialias: true,
   canvasStyle: null,
   disableContextMenu: true,
@@ -15,8 +15,8 @@ const config = {
     path: 'assets/'
   },
   scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
+    mode: Scale.FIT,
+    autoCenter: Scale.CENTER_BOTH,
     width: 480,
     height: 740
   },
@@ -43,4 +43,4 @@ const config = {
   scene: [Boot, Main]
 }
 
-export default new Phaser.Game(config)
+export default new Game(config)
