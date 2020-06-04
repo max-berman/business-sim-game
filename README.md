@@ -29,13 +29,16 @@ npm run build
 - Decision behind using Phaser was mainly based on the time limitation as Phaser supports game loop, tweens, animation, sound and inputs out of the box. However React.js and Vanila JavaScript were considered as a second and third choices accordingly.
 - Tech implementation is mainly focused on the front-end side as the aim was to provide a relatively polished UI and leveraging server side only for the game state persistance seemed as an overkill. Instead browser's localStorage has been used for that.
 - The last feature from the requirement above has been omitted due to time limit. However the game state is persistent and being saved upon closing browser window/tab so that when the player opens the game (in the same browser) he will be able to start from where he left off.
+- Used [AdVenture Capitalist Wiki](https://adventure-capitalist.fandom.com/wiki/Businesses) as a reference for some of the values (coefficients), formulas and general game information
 
 ### Room for improvements
 
-- Add Unit Testing for click/tap events, game logic etc
-- Pack multiple images into one atlas for optimization
-- Add sprite animation for better UI experience
-- Optimize better for mobile experience and build size (the vurrent JavaScript build file is 1.2MB)
+- Add Unit Testing for click/tap events, game logic etc.
+- Pack multiple images into one atlas for optimization.
+- Add sprite animation ti improve UI experience.
+- Add game tutorial.
+- Optimize better for mobile experience.
+- Reduce build size (the current JavaScript build file is 1.2MB).
 - Should I have more time I would approach the last item on the requirement list. The way to do it is simple. Every business instance keeps the state for current revenue and delay(considering it runs automatically with the manager). So once player leaves the game (closes browser tab) I would be able to calculate amount of money each business has made based on the time when player opens the game.
 
 ## Game Screenshot

@@ -44,10 +44,13 @@ export default class Biz {
   }
 
   displayTooltip(x, y, text) {
-    this.tooltip = this.scene.add.text(x, y, text, bizAmount).setOrigin(0.5).setAlpha(1)
+    this.tooltip = this.scene.add
+      .text(x, y, text, bizAmount)
+      .setOrigin(0.5)
+      .setVisible(true)
   }
   removeTooltip() {
-    this.tooltip.setAlpha(0)
+    this.tooltip.setVisible(false)
   }
 
   bizActionCallback() {
@@ -67,7 +70,6 @@ export default class Biz {
   handleBizAction() {
     this.isBusy = true
     const { revenue, delay } = this.config
-    this.icon.setAlpha(0.5)
     this.countDown = this.scene.time.delayedCall(
       delay,
       this.bizActionCallback,
@@ -144,11 +146,8 @@ export default class Biz {
       )
     }
 
-    this.button.manager
-      .setOrigin(0)
-      .setInteractive(pointerStyle)
-      .setScale(0.6)
-      .setAlpha(0)
+    this.button.manager.setOrigin(0).setInteractive(pointerStyle).setScale(0.6)
+
     this.indicator.title.setOrigin(isOdd ? 0 : 1).setAngle(isOdd ? -2 : 2)
     this.indicator.bizAmount.setOrigin(isOdd ? 1 : 0).setDepth(0.2)
 
@@ -158,11 +157,7 @@ export default class Biz {
       .setDepth(0)
       .setDepth(1)
 
-    this.button.buyMore
-      .setOrigin(0.5)
-      .setText('Buy')
-      .setAlpha(0)
-      .setInteractive(pointerStyle)
+    this.button.buyMore.setOrigin(0.5).setText('Buy').setInteractive(pointerStyle)
 
     this.bizPrice = scene.add
       .text(
@@ -235,6 +230,7 @@ export default class Biz {
         scene.sound.playAudioSprite('sfx', 'powerup', { volume: 0.4 })
         this.biz.isBizEnabled = true
         this.handleBuyBiz()
+        this.container.setVisible(true)
         scene.bounceIn(this.container)
       })
       .on('pointerover', function (e) {
@@ -260,6 +256,7 @@ export default class Biz {
         this.indicator.bizAmount
       ])
       .setX(this.biz.amount === 0 ? (isOdd ? -500 : 500) : 0)
+      .setVisible(this.biz.amount !== 0)
 
     if (this.biz.isManagerEnabled) {
       this.handleBizAction()
@@ -270,7 +267,7 @@ export default class Biz {
 
   update(time, delta) {
     const {
-      config: { revenue, title, id, initCost, delay, managerFee },
+      config: { revenue, title, initCost, delay, managerFee },
       button: { buyMore, manager },
       biz: { amount },
       indicator,
@@ -280,6 +277,7 @@ export default class Biz {
       index,
       countDown
     } = this
+    const { totalMoney } = this.scene.data.values
 
     const isOdd = index % 2 === 0
     const posY = index * 104
@@ -299,7 +297,7 @@ export default class Biz {
       })
     )
     // apply a bit of transparency for disabled icon
-    icon.setAlpha(amount > 0 && !this.isBusy ? 1 : 0.9)
+    icon.setTint(amount > 0 && !this.isBusy ? 0xffffff : 0xeeeeee)
     buyMore
       .setText(
         `Buy x 1 - ${this.biz.currentCost.toLocaleString('en-US', {
@@ -307,11 +305,11 @@ export default class Biz {
           currency: 'USD'
         })}`
       )
-      .setAlpha(this.canBuy() ? 1 : 0)
+      .setVisible(this.canBuy())
 
     bizPrice
       .setText(buyLabel)
-      .setAlpha(!this.biz.isBizEnabled)
+      .setVisible(!this.biz.isBizEnabled)
       .setStyle(this.canBuy() ? enabledBizFont : disabledBizFont)
 
     indicator.bizAmount.setText(amount)
@@ -326,14 +324,9 @@ export default class Biz {
       icon.disableInteractive()
     }
 
-    if (this.currentRev >= managerFee) {
-      if (this.biz.isManagerEnabled) {
-        manager.setAlpha(0.5)
-        manager.disableInteractive()
-      } else {
-        //this.scene.pulse(manager, { from: 0.7, to: 0.6 })
-        manager.setAlpha(1)
-      }
+    manager.setVisible(totalMoney >= managerFee)
+    if (this.biz.isManagerEnabled) {
+      manager.setTint(0xeeeeee).setAlpha(0.5).disableInteractive()
     }
 
     // Render countdown only when the timer is dispatched
