@@ -49,14 +49,24 @@ export default class Biz {
       .setOrigin(0.5)
       .setVisible(true)
   }
+
+  hireManagerAction() {
+    const { managerFee } = this.config
+    const { totalMoney } = this.scene.data.values
+    this.currentRev = this.currentRev - managerFee
+    this.scene.updateTotalSum(this.currentRev)
+    this.biz.isManagerEnabled = true
+    if (this.isBusy) return
+    this.handleBizAction()
+  }
+
   removeTooltip() {
     this.tooltip.setVisible(false)
   }
 
   bizActionCallback() {
-    const { revenue, managerFee } = this.config
+    const { revenue } = this.config
     const { totalMoney } = this.scene.data.values
-    const { manager } = this.button
     this.currentRev = totalMoney + revenue * this.biz.amount
     this.scene.updateTotalSum(this.currentRev)
     this.scene.pulseNextBizPrice(this)
@@ -190,9 +200,7 @@ export default class Biz {
     this.button.manager
       .on('pointerdown', () => {
         scene.sound.playAudioSprite('sfx', 'powerup', { volume: 0.4 })
-        this.biz.isManagerEnabled = true
-        if (this.isBusy) return
-        this.handleBizAction()
+        this.hireManagerAction()
       })
       .on('pointerover', () => {
         this.button.manager.setTint(0xeeeeee)
@@ -328,6 +336,7 @@ export default class Biz {
 
     manager.setVisible(totalMoney >= managerFee)
     if (this.biz.isManagerEnabled) {
+      manager.setVisible(true)
       manager.setTint(0xeeeeee).setAlpha(0.5).disableInteractive()
     }
 
