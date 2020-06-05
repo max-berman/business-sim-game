@@ -5,8 +5,8 @@ import _uniqBy from 'lodash/uniqBy'
 
 import { totalSumFont } from '../styles/styles'
 
-let total
 const bizInstances = []
+const total = 0
 
 export default class Main extends Scene {
   constructor() {
@@ -20,7 +20,7 @@ export default class Main extends Scene {
     })
     this.data.set('totalMoney', sum)
     this.totalIndicator.setText(totalSumFormatted)
-    window.document.title = total
+    window.document.title = sum.toFixed(2)
     if (typeof localStorage !== undefined) {
       localStorage.setItem('total', sum)
     }
@@ -39,7 +39,7 @@ export default class Main extends Scene {
     if (typeof localStorage !== undefined && savedTotal !== null) {
       this.data.set('totalMoney', savedTotal)
     } else {
-      this.data.set('totalMoney', 0)
+      this.data.set('totalMoney', total)
     }
   }
 

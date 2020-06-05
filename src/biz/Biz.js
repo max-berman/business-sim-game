@@ -290,6 +290,8 @@ export default class Biz {
       ? `Buy ${title} for ${initPrice}`
       : `${title} - ${initPrice}`
 
+    circularCountdown.clear()
+
     indicator.revenue.setText(
       (amount * revenue).toLocaleString('en-US', {
         style: 'currency',
@@ -334,7 +336,7 @@ export default class Biz {
       const delayInSec = delay * 0.001
       const startAngle = -90
       const endAngle = startAngle + (countDown.getElapsedSeconds() * 360) / delayInSec
-      circularCountdown.clear()
+
       circularCountdown.lineStyle(3, 0x85ae53, 1)
       circularCountdown.beginPath()
       circularCountdown.arc(
