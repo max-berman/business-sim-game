@@ -93,6 +93,13 @@ export default class Biz {
     const { totalMoney } = this.scene.data.values
     //debugger
     this.currentRev = totalMoney - this.biz.currentCost
+
+    /*     
+    TODO When Speed upgrade is in place Change it to:
+    CurrentCost = Initial Cost * (1 - Coefficient^N)/(1 - Coefficient)
+    Where N is speed number of speed upgrades
+    Ref: https://adventure-capitalist.fandom.com/wiki/Businesses 
+    */
     this.biz.currentCost *= coefficient
     this.biz.amount += 1
     this.scene.updateTotalSum(this.currentRev)
