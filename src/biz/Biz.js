@@ -95,9 +95,12 @@ export default class Biz {
     this.currentRev = totalMoney - this.biz.currentCost
 
     /*     
-    TODO When Speed upgrade is in place Change it to:
+    TODO: When Speed upgrade is in place change currentCost formula to:
     CurrentCost = Initial Cost * (1 - Coefficient^N)/(1 - Coefficient)
-    Where N is speed number of speed upgrades
+    where N is total number of businesses
+
+    For Speed Upgrade = initTime / (2^N)
+    N - number of upgrades
     Ref: https://adventure-capitalist.fandom.com/wiki/Businesses 
     */
     this.biz.currentCost *= coefficient
@@ -151,7 +154,7 @@ export default class Biz {
       buyMore: scene.add.text(240, posY + 182, 'Buy', BuyButtonFont)
     }
 
-    // Intit Indicators
+    // Init Indicators
     this.indicator = {
       title: scene.add.text(isOdd ? 20 : 460, titleYAlign, title, bizTitleFont),
       revenue: scene.add.text(240, posY + 138, revenue, revTextFont),

@@ -26,6 +26,12 @@ const config = {
     touch: true,
     gamepad: false
   },
+  fps: {
+    forceSetTimeOut: true,
+    panicMax: 0,
+    smoothStep: false,
+    target: 24
+  },
   physics: {
     default: 'arcade',
     arcade: {
