@@ -35,7 +35,7 @@ npm run build
 
 - Add Unit Testing for click/tap events, game logic etc.
 - Pack multiple images into one atlas for optimization.
-- Add sprite animation ti improve UI experience.
+- Add sprite animation to improve UI experience.
 - Add game tutorial.
 - Optimize better for mobile experience.
 - Reduce build size (the current JavaScript build file is 1.2MB).
