@@ -2,6 +2,8 @@ import { Geom, Scene } from 'phaser'
 import Biz from '../biz/Biz'
 import bizUnits from '../biz/bizUnitsConfig'
 import _uniqBy from 'lodash/uniqBy'
+// https://github.com/SilverTree7622/Phaser3_GUI_Inspector
+// import PhaserGUIAction from 'phaser3_gui_inspector'
 
 import { totalSumFont } from '../styles/styles'
 
