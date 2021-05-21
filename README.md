@@ -44,5 +44,3 @@ npm run build
 - Optimize better for mobile experience.
 - Reduce build size (the current JavaScript build file is 1.2MB).
 - Should I have more time I would approach the last item on the requirement list. The way to do it is simple. Every business instance keeps the state for current revenue and delay(considering it runs automatically with the manager). So once player leaves the game (closes browser tab) I would be able to calculate amount of money each business has made based on the time when player opens the game.
-
----
