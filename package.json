@@ -23,7 +23,7 @@
 	},
 	"dependencies": {
 		"lodash": "^4.17.15",
-		"phaser": "^3.23.0"
+		"phaser": "^3.55.2"
 	},
 	"parcelCleanPaths": [
 		"dist"
